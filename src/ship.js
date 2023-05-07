@@ -4,15 +4,16 @@ let Ship = (len) => {
   let shipLength = len;
 
   const hit = () => {
-    let noOfHits = 1;
-    return len - noOfHits;
+    if (shipLength > 0) {
+      return shipLength -= 1;
+    }
   }
 
   const isSunk = () => {
-    
+    return shipLength === 0;
   }
 
-  return {shipLength, hit};
+  return {shipLength, hit, isSunk};
 
 }
 
