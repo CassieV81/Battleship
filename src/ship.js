@@ -1,9 +1,18 @@
 
 let Ship = (len) => {
 
-   let createShip = new Array(len);
+  let shipLength = len;
 
-   return createShip;
+  const hit = () => {
+    let noOfHits = 1;
+    return len - noOfHits;
+  }
+
+  const isSunk = () => {
+    
+  }
+
+  return {shipLength, hit};
 
 }
 

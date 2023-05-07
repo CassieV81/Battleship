@@ -5,4 +5,5 @@ const newShip = (len) => {
   return ship;
 }
 
+
 export default newShip;
