@@ -1,5 +1,5 @@
 
-let Ship = (len) => {
+const Ship = (len) => {
 
   let shipLength = len;
 
