@@ -32,11 +32,29 @@ const Gameboard = () => {
     }
   };
 
+  const receiveAttack = (rol, col) => {
+    let cell = board[rol][col];
+    if (cell.ship) {
+      return cell.ship.hit();
+    } 
+  }
+
+  const allShipsSunk = () => {
+    return board.every(row =>
+      row.every(cell => !cell.ship || cell.ship.isSunk())
+    );
+  };
+
   const getBoard = () => {
     return board;
   };
 
-  return { createBoard, placeShip, getBoard };
+  return { 
+    createBoard, 
+    placeShip, 
+    receiveAttack,
+    allShipsSunk,
+    getBoard };
 };
 
 export default Gameboard;
