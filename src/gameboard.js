@@ -1,21 +1,42 @@
+import Ship from "./ship.js";
 
 const Gameboard = () => {
+  const size = 5;
+  const board = [];
 
   const createBoard = () => {
-    const board = [];
-    const size = 10;
-    for(let i = 0; i < size; i++) {
+    for (let i = 0; i < size; i++) {
       const row = [];
       board.push(row);
-      for(let j = 0; j < size; j++) {
-        const col = [];
-        row.push(col);
+      for (let j = 0; j < size; j++) {
+        row.push({ ship: null });
       }
     }
-    board[9][9]= 'hi'
-    console.log(board);
-  }
-  createBoard();
-  
-}
-Gameboard();
+  };
+
+  createBoard(); // Create the board once
+
+  const placeShip = (ship, row, col, orientation) => {
+    if (orientation === 'horizontal') {
+      if (col + ship.shipLength <= size) {
+        for (let i = col; i < col + ship.shipLength; i++) {
+          board[row][i].ship = ship;
+        }
+      }
+    } else if (orientation === 'vertical') {
+      if (row + ship.shipLength <= size) {
+        for (let i = 0; i < ship.shipLength; i++) {
+          board[row + i][col].ship = ship;
+        }
+      }
+    }
+  };
+
+  const getBoard = () => {
+    return board;
+  };
+
+  return { createBoard, placeShip, getBoard };
+};
+
+export default Gameboard;
