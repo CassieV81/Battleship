@@ -16,7 +16,28 @@ const Gameboard = () => {
 
   createBoard(); // Create the board once
 
+  const isSpaceOccupied = (ship, row, col, orientation) => {
+    if (orientation === 'horizontal') {
+      for (let i = col; i < col + ship.shipLength; i++) {
+        if (board[row][i].ship !== null) {
+          return true;
+        }
+      }
+    } else if (orientation === 'vertical') {
+      for (let i = 0; i < ship.shipLength; i++) {
+        if (board[row + i][col].ship !== null) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  
   const placeShip = (ship, row, col, orientation) => {
+    if (isSpaceOccupied(ship, row, col, orientation)) {
+      return false;
+    }
+  
     if (orientation === 'horizontal') {
       if (col + ship.shipLength <= size) {
         for (let i = col; i < col + ship.shipLength; i++) {
@@ -30,7 +51,9 @@ const Gameboard = () => {
         }
       }
     }
+    return true;
   };
+  
 
   const receiveAttack = (rol, col) => {
     let cell = board[rol][col];
