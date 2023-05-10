@@ -1,7 +1,7 @@
 import Ship from "./ship.js";
 
 const Gameboard = () => {
-  const size = 5;
+  const size = 10;
   const board = [];
 
   const createBoard = () => {
@@ -9,7 +9,7 @@ const Gameboard = () => {
       const row = [];
       board.push(row);
       for (let j = 0; j < size; j++) {
-        row.push({ ship: null });
+        row.push({ ship: null, hit: false });
       }
     }
   };
@@ -34,9 +34,14 @@ const Gameboard = () => {
 
   const receiveAttack = (rol, col) => {
     let cell = board[rol][col];
-    if (cell.ship) {
-      return cell.ship.hit();
-    } 
+    if (cell.hit) {
+      return;
+    } else {
+      cell.hit = true;
+      if (cell.ship) {
+        return cell.ship.hit();
+      }
+    }
   }
 
   const allShipsSunk = () => {
