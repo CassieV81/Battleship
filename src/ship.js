@@ -5,8 +5,9 @@ const Ship = (len) => {
 
   const hit = () => {
     if (shipLength > 0) {
-      return shipLength -= 1;
+      shipLength -= 1;
     }
+    return shipLength;
   }
 
   const isSunk = () => {

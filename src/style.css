@@ -24,6 +24,16 @@
 
 .player, .computer {
   border: solid 1px grey;
-  width: 250px;
-  height: 250px;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 1px;
+  /* width: 250px;
+  height: 250px; */
+}
+
+.cells {
+  border: solid 1px grey;
+  width: 25px;
+  height: 25px;
+  background-color: lightblue;
 }
