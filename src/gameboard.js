@@ -17,13 +17,13 @@ const Gameboard = () => {
   createBoard(); // Create the board once
 
   const isSpaceOccupied = (ship, row, col, orientation) => {
-    if (orientation === 'horizontal') {
+    if (orientation === 'vertical') {
       for (let i = col; i < col + ship.shipLength; i++) {
         if (board[row][i].ship !== null) {
           return true;
         }
       }
-    } else if (orientation === 'vertical') {
+    } else if (orientation === 'horizontal') {
       for (let i = 0; i < ship.shipLength; i++) {
         if (board[row + i][col].ship !== null) {
           return true;
@@ -38,13 +38,13 @@ const Gameboard = () => {
       return false;
     }
   
-    if (orientation === 'horizontal') {
+    if (orientation === 'vertical') {
       if (col + ship.shipLength <= size) {
         for (let i = col; i < col + ship.shipLength; i++) {
           board[row][i].ship = ship;
         }
       }
-    } else if (orientation === 'vertical') {
+    } else if (orientation === 'horizontal') {
       if (row + ship.shipLength <= size) {
         for (let i = 0; i < ship.shipLength; i++) {
           board[row + i][col].ship = ship;
@@ -79,6 +79,7 @@ const Gameboard = () => {
 
   return { 
     createBoard, 
+    isSpaceOccupied,
     placeShip, 
     receiveAttack,
     allShipsSunk,

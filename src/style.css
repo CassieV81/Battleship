@@ -37,3 +37,7 @@
   height: 25px;
   background-color: rgb(214, 242, 252);
 }
+
+.ship {
+  border: solid 2px;
+}
