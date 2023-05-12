@@ -1,5 +1,6 @@
 import Gameboard from "./gameboard.js";
 import Ship from "./ship.js";
+import Player from "./player.js";
 
 const playerBoard = document.getElementById('playerBoard');
 const computerBoard = document.getElementById('computerBoard');
@@ -56,28 +57,48 @@ function placeShips(ship, boardElement) {
   }
 }
 
-function placePlayerShipsonLoad(boardElement) {
+function placeShipsOnLoad(boardElement) {
+  // for (let i = 0; i < 4; i++) {
+  //   placeShips(Ship(1), boardElement);
+  // }
   for (let i = 0; i < 4; i++) {
-    placeShips(Ship(1), boardElement);
-  }
-  for (let i = 0; i < 3; i++) {
     placeShips(Ship(2), boardElement);
   }
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 3; i++) {
     placeShips(Ship(3), boardElement); 
   }
-  placeShips(Ship(4), boardElement); 
+  for (let i = 0; i < 2; i++) {
+    placeShips(Ship(4), boardElement); 
+  }
 }
-placePlayerShipsonLoad(playerGameBoard);
-placePlayerShipsonLoad(computerGameBoard);
+placeShipsOnLoad(playerGameBoard);
+placeShipsOnLoad(computerGameBoard);
 
-function checkCell(event, boardElement) {
+function checkComputerCell(event, boardElement) {
   const cell = event.target;
   const row = cell.getAttribute('data-row');
   const col = cell.getAttribute('data-col');
-  const cellsArray = boardElement.getBoard();
 
-  if(!cellsArray[row][col].ship) {
+  // Stop cell from being clicked on twice
+  const cellsArray = boardElement.getBoard();
+  if (cellsArray[row][col].hit) return;
+
+  const hit = boardElement.receiveAttack(row, col);
+  checkHits(cell, hit);
+}
+function checkPlayerCell(row, col, boardElement) {
+
+  const cellsArray = boardElement.getBoard();
+  if (cellsArray[row][col].hit) return;
+
+  const hit = boardElement.receiveAttack(row, col);
+  const cell = document.querySelector(`.playerCell[data-row='${row}'][data-col='${col}']`);
+
+  checkHits(cell, hit);
+}
+
+function checkHits(cell, hit) {
+  if(!hit) {
     cell.style.backgroundColor = 'aqua';
     cell.style.borderColor = 'aqua';
   } else {
@@ -85,10 +106,42 @@ function checkCell(event, boardElement) {
     cell.style.borderColor = 'indianred';
   }
 }
-// console.log(playerCells);
-for (const cell of playerCells) {
-  cell.addEventListener('click', (event) => checkCell(event, playerGameBoard));
+
+function playerTurn() {
+  for (const cell of computerCells) {
+    const row = cell.getAttribute('data-row');
+    const col = cell.getAttribute('data-col');
+    const cellsArray = computerGameBoard.getBoard();
+    cell.addEventListener('click', (event) => {
+      checkComputerCell(event, computerGameBoard);
+      checkWin();
+      if (cellsArray[row][col].ship === null) {
+        computerTurn();
+      }
+    });
+  }
 }
-for (const cell of computerCells) {
-  cell.addEventListener('click', (event) => checkCell(event, computerGameBoard));
+
+function computerTurn() {
+  setTimeout(() => {
+    let row = Math.floor(Math.random() * 10);
+    let col = Math.floor(Math.random() * 10);
+    const cellsArray = playerGameBoard.getBoard();
+    checkPlayerCell(row, col, playerGameBoard);
+    checkWin();
+    if (cellsArray[row][col].ship !== null) {
+      computerTurn();
+    }
+  }, 500)
 }
+playerTurn();
+function checkWin() {
+  if (computerGameBoard.allShipsSunk) {
+    alert('You win');
+  } else if (playerGameBoard.allShipsSunk) {
+    alert('Computer wins');
+  }
+}
+
+const activeBtn = document.getElementById('activate');
+activeBtn.addEventListener('click', () => boardActive = true);

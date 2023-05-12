@@ -1,4 +1,3 @@
-// import Ship from "./ship.js";
 
 const Gameboard = () => {
   const size = 10;
@@ -14,7 +13,7 @@ const Gameboard = () => {
     }
   };
 
-  createBoard(); // Create the board once
+  createBoard();
 
   const isSpaceOccupied = (ship, row, col, orientation) => {
     if (orientation === 'vertical') {

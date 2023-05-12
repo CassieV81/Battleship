@@ -1,8 +1,6 @@
-import Gameboard from "./gameboard";
+
 
 const Player = (board) => {
-
-  // let board = Gameboard();
 
   const humanPlayer = (row, col) => {
     let cell = board.getBoard()[row][col];
