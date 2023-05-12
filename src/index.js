@@ -107,44 +107,51 @@ function checkHits(cell, hit) {
   }
 }
 
+let boardActive = true;
+
 function playerTurn() {
-  for (const cell of computerCells) {
-    const row = cell.getAttribute('data-row');
-    const col = cell.getAttribute('data-col');
-    const cellsArray = computerGameBoard.getBoard();
-    cell.addEventListener('click', (event) => {
-      checkComputerCell(event, computerGameBoard);
-      checkWin();
-      if (cellsArray[row][col].ship === null) {
-        computerTurn();
-      }
-    }, { once: true});
+  if (boardActive) {
+    for (const cell of computerCells) {
+      const row = cell.getAttribute('data-row');
+      const col = cell.getAttribute('data-col');
+      const cellsArray = computerGameBoard.getBoard();
+      cell.addEventListener('click', (event) => {
+        checkComputerCell(event, computerGameBoard);
+        if (cellsArray[row][col].ship === null) {
+          computerTurn();
+        }
+      }, { once: true});
+    }
   }
+  checkWin();
 }
 
 function computerTurn() {
-  setTimeout(() => {
-    let row = Math.floor(Math.random() * 10);
-    let col = Math.floor(Math.random() * 10);
-    const cellsArray = playerGameBoard.getBoard();
-    console.log(cellsArray[row][col].hit)
-    if (cellsArray[row][col].hit === false) {
-      checkPlayerCell(row, col, playerGameBoard);
-    } else {
-      computerTurn();
-    }
-    checkWin();
-    if (cellsArray[row][col].ship !== null) {
-      computerTurn();
-    }
-  }, 500)
+  if (boardActive) {
+    setTimeout(() => {
+      let row = Math.floor(Math.random() * 10);
+      let col = Math.floor(Math.random() * 10);
+      const cellsArray = playerGameBoard.getBoard();
+      if (cellsArray[row][col].hit === false) {
+        checkPlayerCell(row, col, playerGameBoard);
+        if (cellsArray[row][col].ship !== null) {
+          computerTurn();
+        }
+      } else {
+        computerTurn();
+      }
+    }, 100)
+  }
+  checkWin();
 }
 
 function checkWin() {
   if (computerGameBoard.allShipsSunk()) {
     endGame('You win');
+    boardActive = false;
   } else if (playerGameBoard.allShipsSunk()) {
     endGame('Computer wins');
+    boardActive = false;
   }
 }
 
@@ -171,6 +178,6 @@ function endGame(msg) {
   })
 }
 
-restartBtn.addEventListener('click', startGame);
+restartBtn.addEventListener('click', () => location.reload());
 
 startGame();

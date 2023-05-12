@@ -20,15 +20,31 @@
         <h3>Enemy's Board</h3>
         <div class="computer" id="computerBoard"></div>
       </div>
+      <div class="keys">
+        <span>Ship
+          <div class="ship"></div>
+        </span>
+        <span>Water
+          <div class="water"></div>
+        </span>
+        <span>Hit
+          <div class="hit"></div>
+        </span>
+      </div>
     </div>
     <button id="restart">Restart</button>
     <dialog id="start">
-      <p>Sink all enemy ships first to win</p>
-      <button id="startBtn">Start</button>
+      <div>
+        <h4>Welcome to Battleship</h4>
+        <p>Sink all enemy ships first to win</p>
+        <button id="startBtn">Start</button>
+      </div>
     </dialog>
     <dialog id="end">
-      <p id="endMessage"></p>
-      <button id="closeBtn">Close</button>
+      <div>
+        <p id="endMessage"></p>
+        <button id="closeBtn">Close</button>
+      </div>
     </dialog>
   </div>
 </body>
