@@ -1,6 +1,5 @@
 import Gameboard from "./gameboard.js";
 import Ship from "./ship.js";
-import Player from "./player.js";
 
 const playerBoard = document.getElementById('playerBoard');
 const computerBoard = document.getElementById('computerBoard');
@@ -73,6 +72,20 @@ function placeShipsOnLoad(boardElement) {
 }
 placeShipsOnLoad(playerGameBoard);
 placeShipsOnLoad(computerGameBoard);
+
+function showPlayerShips() {
+  for (const cell of playerCells) {
+    const row = cell.getAttribute('data-row');
+    const col = cell.getAttribute('data-col');
+    const cellsArray = playerGameBoard.getBoard();
+    if (cellsArray[row][col].ship !== null) {
+      cell.style.backgroundColor = 'antiquewhite';
+      cell.style.borderColor = 'antiquewhite';
+    }
+  }
+}
+
+
 
 function checkComputerCell(event, boardElement) {
   const cell = event.target;
@@ -165,6 +178,7 @@ const endMsg = document.getElementById('endMessage');
 function startGame() {
   startModal.showModal();
   startBtn.addEventListener('click', () => {
+    showPlayerShips();
     playerTurn();
     startModal.close();
   })
