@@ -1,4 +1,4 @@
-import Ship from './Ship';
+import Ship from './ship';
 
 describe('Ship', () => {
   let testShip;

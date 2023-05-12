@@ -118,7 +118,7 @@ function playerTurn() {
       if (cellsArray[row][col].ship === null) {
         computerTurn();
       }
-    });
+    }, { once: true});
   }
 }
 
@@ -127,21 +127,50 @@ function computerTurn() {
     let row = Math.floor(Math.random() * 10);
     let col = Math.floor(Math.random() * 10);
     const cellsArray = playerGameBoard.getBoard();
-    checkPlayerCell(row, col, playerGameBoard);
+    console.log(cellsArray[row][col].hit)
+    if (cellsArray[row][col].hit === false) {
+      checkPlayerCell(row, col, playerGameBoard);
+    } else {
+      computerTurn();
+    }
     checkWin();
     if (cellsArray[row][col].ship !== null) {
       computerTurn();
     }
   }, 500)
 }
-playerTurn();
+
 function checkWin() {
-  if (computerGameBoard.allShipsSunk) {
-    alert('You win');
-  } else if (playerGameBoard.allShipsSunk) {
-    alert('Computer wins');
+  if (computerGameBoard.allShipsSunk()) {
+    endGame('You win');
+  } else if (playerGameBoard.allShipsSunk()) {
+    endGame('Computer wins');
   }
 }
 
-const activeBtn = document.getElementById('activate');
-activeBtn.addEventListener('click', () => boardActive = true);
+const restartBtn = document.getElementById('restart');
+const startModal = document.getElementById('start');
+const startBtn = document.getElementById('startBtn');
+const endModal = document.getElementById('end');
+const closeBtn = document.getElementById('closeBtn');
+const endMsg = document.getElementById('endMessage');
+
+function startGame() {
+  startModal.showModal();
+  startBtn.addEventListener('click', () => {
+    playerTurn();
+    startModal.close();
+  })
+}
+
+function endGame(msg) {
+  endMsg.innerText = msg;
+  endModal.showModal();
+  closeBtn.addEventListener('click', () => {
+    endModal.close();
+  })
+}
+
+restartBtn.addEventListener('click', startGame);
+
+startGame();
