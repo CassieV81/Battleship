@@ -30,18 +30,13 @@ const createBoardUI = (boardElement, gameBoardInstance) => {
 createBoardUI(playerBoard, playerGameBoard);
 createBoardUI(computerBoard, computerGameBoard);
 
-// create ships in different sizes
-// const sailBoat = Ship(1);
-// const ship = Ship(2);
-// const battleShip = Ship(3);
-// const aircraftCarrier = Ship(4);
-
-
 const playerCells = document.querySelectorAll('.playerCell');
 const computerCells = document.querySelectorAll('.computerCell');
-const randomBtn = document.getElementById('placeShips');
 
-function placeRandomizedShips(ship) {
+
+// create function placing ships in random areas on gameboard
+
+function placeShips(ship, boardElement) {
   let rand = Math.floor(Math.random() * 2);
   let orientation = (rand === 0) ? 'horizontal' : 'vertical';
   let row, col;
@@ -54,93 +49,46 @@ function placeRandomizedShips(ship) {
     col = Math.floor(Math.random() * (10 - (ship.shipLength - 1)));
   }
 
-  if (playerGameBoard.isSpaceOccupied(ship, row, col, orientation)) {
-    placeRandomizedShips(ship);
+  if (boardElement.isSpaceOccupied(ship, row, col, orientation)) {
+    placeShips(ship, boardElement);
   } else {
-    playerGameBoard.placeShip(ship, row, col, orientation);
-  }
-}
-// create sismilar function for computer board
-function placeComputerShips(ship) {
-  let rand = Math.floor(Math.random() * 2);
-  let orientation = (rand === 0) ? 'horizontal' : 'vertical';
-  let row, col;
-
-  if (orientation === 'horizontal') {
-    row = Math.floor(Math.random() * (10 - (ship.shipLength - 1)));
-    col = Math.floor(Math.random() * 10);
-  } else {
-    row = Math.floor(Math.random() * 10);
-    col = Math.floor(Math.random() * (10 - (ship.shipLength - 1)));
-  }
-
-  if (computerGameBoard.isSpaceOccupied(ship, row, col, orientation)) {
-    placeComputerShips(ship);
-  } else {
-    computerGameBoard.placeShip(ship, row, col, orientation);
+    boardElement.placeShip(ship, row, col, orientation);
   }
 }
 
-// create function placing ships in random areas on player's gameboard
-function randomShipBtn() {
+function placePlayerShipsonLoad(boardElement) {
   for (let i = 0; i < 4; i++) {
-    placeRandomizedShips(Ship(1));
+    placeShips(Ship(1), boardElement);
   }
   for (let i = 0; i < 3; i++) {
-    placeRandomizedShips(Ship(2));
+    placeShips(Ship(2), boardElement);
   }
   for (let i = 0; i < 2; i++) {
-    placeRandomizedShips(Ship(3)); 
+    placeShips(Ship(3), boardElement); 
   }
-  placeRandomizedShips(Ship(4)); 
+  placeShips(Ship(4), boardElement); 
 }
-randomBtn.addEventListener('click', randomShipBtn);
+placePlayerShipsonLoad(playerGameBoard);
+placePlayerShipsonLoad(computerGameBoard);
 
-// create function placing ships in random areas on computer's gameboard
-function placeComputerShipsOnLoad() {
-  for (let i = 0; i < 4; i++) {
-    placeComputerShips(Ship(1)); 
-  }
-  for (let i = 0; i < 3; i++) {
-    placeComputerShips(Ship(2)); 
-  }
-  for (let i = 0; i < 2; i++) {
-    placeComputerShips(Ship(3)); 
-  }
-  placeComputerShips(Ship(4)); 
-}
-placeComputerShipsOnLoad();
-
-function checkPlayerCell(event) {
+function checkCell(event, boardElement) {
   const cell = event.target;
   const row = cell.getAttribute('data-row');
   const col = cell.getAttribute('data-col');
-  const cellsArray = playerGameBoard.getBoard();
+  const cellsArray = boardElement.getBoard();
 
   if(!cellsArray[row][col].ship) {
-    cell.style.backgroundColor = 'lightgrey';
+    cell.style.backgroundColor = 'aqua';
+    cell.style.borderColor = 'aqua';
   } else {
     cell.style.backgroundColor = 'indianred';
+    cell.style.borderColor = 'indianred';
   }
 }
-function checkComputerCell(event) {
-  const cell = event.target;
-  const row = cell.getAttribute('data-row');
-  const col = cell.getAttribute('data-col');
-  const cellsArray = computerGameBoard.getBoard();
-
-  if (!cellsArray[row][col].ship) {
-    cell.style.backgroundColor = 'lightgrey';
-  } else {
-    cell.style.backgroundColor = 'indianred';
-  }
-}
-
-
+// console.log(playerCells);
 for (const cell of playerCells) {
-  cell.addEventListener('click', checkPlayerCell);
+  cell.addEventListener('click', (event) => checkCell(event, playerGameBoard));
 }
-
 for (const cell of computerCells) {
-  cell.addEventListener('click', checkComputerCell);
+  cell.addEventListener('click', (event) => checkCell(event, computerGameBoard));
 }
