@@ -108,8 +108,6 @@ function checkComputerCell(event, boardElement) {
   if (cellsArray[row][col].hit) return;
 
   const hit = boardElement.receiveAttack(row, col);
-  console.log(hit);
-  console.log(cell);
   checkHits(cell, hit);
 }
 function checkPlayerCell(row, col, boardElement) {
@@ -134,23 +132,27 @@ function checkHits(cell, hit) {
   checkWin();
 }
 
-let boardActive = true;
+let boardActive;
 
-function playerTurn() {
-  if (boardActive) {
-    for (const cell of computerCells) {
-      const row = cell.getAttribute('data-row');
-      const col = cell.getAttribute('data-col');
-      const cellsArray = computerGameBoard.getBoard();
-      cell.addEventListener('click', (event) => {
-        checkComputerCell(event, computerGameBoard);
-        if (cellsArray[row][col].ship === null) {
-          computerTurn();
-        }
-      }, { once: true});
-    }
+function cellClickEvent(event) {
+  const cell = event.target;
+  const row = cell.getAttribute('data-row');
+  const col = cell.getAttribute('data-col');
+  const cellsArray = computerGameBoard.getBoard();
+  checkComputerCell(event, computerGameBoard);
+  if (cellsArray[row][col].ship === null) {
+    computerTurn();
   }
 }
+
+function playerTurn() {
+  for (const cell of computerCells) { 
+    if (boardActive) {
+      cell.addEventListener('click', cellClickEvent, { once: true });
+    } 
+  }
+}
+
 
 function computerTurn() {
   if (boardActive) {
@@ -173,10 +175,8 @@ function computerTurn() {
 function checkWin() {
   if (computerGameBoard.allShipsSunk()) {
     endGame('You win');
-    boardActive = false;
   } else if (playerGameBoard.allShipsSunk()) {
     endGame('Computer wins');
-    boardActive = false;
   }
 }
 
@@ -190,6 +190,7 @@ const endMsg = document.getElementById('endMessage');
 function startGame() {
   startModal.showModal();
   startBtn.addEventListener('click', () => {
+    boardActive = true;
     showPlayerShips();
     playerTurn();
     startModal.close();
@@ -202,6 +203,11 @@ function endGame(msg) {
   closeBtn.addEventListener('click', () => {
     endModal.close();
   })
+  boardActive = false;
+  // Remove event listeners
+  for (const cell of computerCells) {
+    cell.removeEventListener('click', cellClickEvent);
+  }
 }
 
 restartBtn.addEventListener('click', () => location.reload());
