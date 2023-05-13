@@ -85,18 +85,18 @@ function showPlayerShips() {
   }
 }
 // showPlayerShips();
-function showComputerShips() {
-  for (const cell of computerCells) {
-    const row = cell.getAttribute('data-row');
-    const col = cell.getAttribute('data-col');
-    const cellsArray = computerGameBoard.getBoard();
-    if (cellsArray[row][col].ship !== null) {
-      cell.style.backgroundColor = 'antiquewhite';
-      cell.style.borderColor = 'antiquewhite';
-    }
-  }
-}
-showComputerShips();
+// function showComputerShips() {
+//   for (const cell of computerCells) {
+//     const row = cell.getAttribute('data-row');
+//     const col = cell.getAttribute('data-col');
+//     const cellsArray = computerGameBoard.getBoard();
+//     if (cellsArray[row][col].ship !== null) {
+//       cell.style.backgroundColor = 'antiquewhite';
+//       cell.style.borderColor = 'antiquewhite';
+//     }
+//   }
+// }
+// showComputerShips();
 
 function checkComputerCell(event, boardElement) {
   const cell = event.target;
