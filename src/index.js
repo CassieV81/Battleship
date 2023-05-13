@@ -84,8 +84,19 @@ function showPlayerShips() {
     }
   }
 }
-
-
+// showPlayerShips();
+function showComputerShips() {
+  for (const cell of computerCells) {
+    const row = cell.getAttribute('data-row');
+    const col = cell.getAttribute('data-col');
+    const cellsArray = computerGameBoard.getBoard();
+    if (cellsArray[row][col].ship !== null) {
+      cell.style.backgroundColor = 'antiquewhite';
+      cell.style.borderColor = 'antiquewhite';
+    }
+  }
+}
+showComputerShips();
 
 function checkComputerCell(event, boardElement) {
   const cell = event.target;
@@ -97,6 +108,8 @@ function checkComputerCell(event, boardElement) {
   if (cellsArray[row][col].hit) return;
 
   const hit = boardElement.receiveAttack(row, col);
+  console.log(hit);
+  console.log(cell);
   checkHits(cell, hit);
 }
 function checkPlayerCell(row, col, boardElement) {
@@ -111,13 +124,14 @@ function checkPlayerCell(row, col, boardElement) {
 }
 
 function checkHits(cell, hit) {
-  if(!hit) {
+  if(hit == undefined) {
     cell.style.backgroundColor = 'aqua';
     cell.style.borderColor = 'aqua';
   } else {
     cell.style.backgroundColor = 'indianred';
     cell.style.borderColor = 'indianred';
   }
+  checkWin();
 }
 
 let boardActive = true;
@@ -136,7 +150,6 @@ function playerTurn() {
       }, { once: true});
     }
   }
-  checkWin();
 }
 
 function computerTurn() {
@@ -155,7 +168,6 @@ function computerTurn() {
       }
     }, 100)
   }
-  checkWin();
 }
 
 function checkWin() {
