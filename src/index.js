@@ -57,17 +57,17 @@ function placeShips(ship, boardElement) {
 }
 
 function placeShipsOnLoad(boardElement) {
-  for (let i = 0; i < 4; i++) {
-    placeShips(Ship(1), boardElement);
-  }
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     placeShips(Ship(2), boardElement);
   }
   for (let i = 0; i < 2; i++) {
-    placeShips(Ship(3), boardElement); 
+    placeShips(Ship(3), boardElement);
   }
   // for (let i = 0; i < 2; i++) {
     placeShips(Ship(4), boardElement); 
+  // }
+  // for (let i = 0; i < 2; i++) {
+    placeShips(Ship(5), boardElement); 
   // }
 }
 placeShipsOnLoad(playerGameBoard);
